@@ -39,43 +39,54 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         // Find the earthquake at the given position in the list of earthquakes
         Earthquake currentEarthquake = getItem(position);
+        if (currentEarthquake != null) {
+            TextView magnitudeView = (TextView) listItemView.findViewById(R.id.magnitude);
+            String magnitudeObject = formatMagnitude(currentEarthquake.getMagnitude());
+            magnitudeView.setText(magnitudeObject);
 
-        TextView magnitudeView = (TextView) listItemView.findViewById(R.id.magnitude);
-        String magnitudeObject = formatMagnitude(currentEarthquake.getMagnitude());
-        magnitudeView.setText(magnitudeObject);
+            // Set the proper background color on the magnitude circle.
+            // Fetch the background from the TextView, which is a GradientDrawable.
+            GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeView.getBackground();
 
-        // Set the proper background color on the magnitude circle.
-        // Fetch the background from the TextView, which is a GradientDrawable.
-        GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeView.getBackground();
+            // Get the appropriate background color based on the current earthquake magnitude
+            int magnitudeColor = getMagnitudeColor(currentEarthquake.getMagnitude());
 
-        // Get the appropriate background color based on the current earthquake magnitude
-        int magnitudeColor = getMagnitudeColor(currentEarthquake.getMagnitude());
+            // Set the color on the magnitude circle
+            magnitudeCircle.setColor(magnitudeColor);
 
-        // Set the color on the magnitude circle
-        magnitudeCircle.setColor(magnitudeColor);
+            /**
+             * Separate string to distance and location.
+             */
+            String s = currentEarthquake.getLocation();
+            String distance = "";
+            String location = "";
+            if (s.contains(" of ")) {
+                int index = s.lastIndexOf("of");
+                distance = s.substring(0, index + 2);
+                location = s.substring(index + 3);
+            } else {
+                distance = "somewhere in";
+                location = s;
+            }
 
+            TextView distanceView = (TextView) listItemView.findViewById(R.id.location_offset);
+            distanceView.setText(distance);
 
-        String s = currentEarthquake.getLocation();
-        int index = s.lastIndexOf("of");
-        String distance = s.substring(0, index + 2);
-        String location = s.substring(index + 3);
+            TextView locationView = (TextView) listItemView.findViewById(R.id.primary_location);
+            locationView.setText(location);
 
-        TextView distanceView = (TextView) listItemView.findViewById(R.id.location_offset);
-        distanceView.setText(distance);
+            TextView dateView = (TextView) listItemView.findViewById(R.id.date);
+            Date date = new Date(currentEarthquake.getDate());
+            String dateObject = formatDate(date);
+            dateView.setText(dateObject);
 
-        TextView locationView = (TextView) listItemView.findViewById(R.id.primary_location);
-        locationView.setText(location);
+            TextView timeView = (TextView) listItemView.findViewById(R.id.time);
+            Date time = new Date(currentEarthquake.getDate());
+            String timeObject = formatTime(time);
+            timeView.setText(timeObject);
 
-        TextView dateView = (TextView) listItemView.findViewById(R.id.date);
-        Date date = new Date(currentEarthquake.getDate());
-        String dateObject = formatDate(date);
-        dateView.setText(dateObject);
-
-        TextView timeView = (TextView) listItemView.findViewById(R.id.time);
-        Date time = new Date(currentEarthquake.getDate());
-        String timeObject = formatTime(time);
-        timeView.setText(timeObject);
-
+            return listItemView;
+        }
         return listItemView;
     }
 
