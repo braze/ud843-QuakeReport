@@ -1,8 +1,6 @@
 Quake Report App
 ===================================
 
-gitHub lick provide the project steps https://github.com/udacity/ud843-QuakeReport
-
 This app displays a list of recent earthquakes in the world
 from the U.S. Geological Survey (USGS) organization.
 
